@@ -13,6 +13,7 @@ import config
 from signal_detector.detector import SignalDetector
 from discord_notifier.notifier import DiscordNotifier
 from data_fetcher.fetcher import DataFetcher
+from watchlist.manager import WatchlistManager
 
 # Configuration du logging
 logging.basicConfig(
@@ -38,6 +39,11 @@ class MonitoringService:
         self.signal_detector = signal_detector
         self.discord_notifier = discord_notifier
         self.data_fetcher = DataFetcher()
+        self.watchlist_manager = WatchlistManager(
+            data_fetcher=self.data_fetcher,
+            signal_detector=self.signal_detector,
+            discord_notifier=self.discord_notifier
+        )
         self.is_running = False
         self.monitoring_thread = None
         self.symbols_to_monitor = config.CRYPTO_TICKERS
@@ -60,6 +66,10 @@ class MonitoringService:
         
         # Vérification de l'état du service toutes les 24h
         schedule.every(24).hours.do(self.send_status_report)
+        
+        # Vérification de la liste de surveillance
+        schedule.every(12).hours.do(self.check_watchlist_daily)  # Pour les timeframes journaliers
+        schedule.every(24).hours.do(self.check_watchlist_weekly)  # Pour les timeframes hebdomadaires
         
         logger.info("Tâches planifiées configurées")
     
@@ -232,3 +242,74 @@ class MonitoringService:
                 
                 # Pause plus longue en cas d'erreur
                 time.sleep(300)
+    
+    def check_watchlist_daily(self):
+        """
+        Vérifie les signaux pour les tickers de la liste de surveillance avec timeframe journalier.
+        """
+        logger.info("Vérification de la liste de surveillance (timeframe journalier)...")
+        
+        # Filtrer les tickers avec timeframe journalier
+        daily_watchlist = {ticker: info for ticker, info in self.watchlist_manager.get_watchlist().items() 
+                          if info["timeframe"] == "1d"}
+        
+        if not daily_watchlist:
+            logger.info("Aucun ticker avec timeframe journalier dans la liste de surveillance")
+            return
+        
+        # Mettre à jour les données pour ces tickers
+        for ticker in daily_watchlist.keys():
+            try:
+                self.data_fetcher.get_ticker_data(ticker, "1d", force_refresh=True)
+                time.sleep(1)  # Pause pour éviter de surcharger l'API
+            except Exception as e:
+                logger.error(f"Erreur lors de la mise à jour des données pour {ticker}: {e}")
+        
+        # Vérifier les signaux
+        new_signals = self.watchlist_manager.check_watchlist_signals()
+        
+        # Envoyer un résumé si des signaux ont été détectés
+        if new_signals:
+            self.discord_notifier.send_watchlist_summary(new_signals)
+            
+        logger.info(f"Vérification de la liste de surveillance (timeframe journalier) terminée: {len(new_signals)} nouveaux signaux")
+    
+    def check_watchlist_weekly(self):
+        """
+        Vérifie les signaux pour les tickers de la liste de surveillance avec timeframe hebdomadaire.
+        """
+        logger.info("Vérification de la liste de surveillance (timeframe hebdomadaire)...")
+        
+        # Filtrer les tickers avec timeframe hebdomadaire
+        weekly_watchlist = {ticker: info for ticker, info in self.watchlist_manager.get_watchlist().items() 
+                           if info["timeframe"] == "1w"}
+        
+        if not weekly_watchlist:
+            logger.info("Aucun ticker avec timeframe hebdomadaire dans la liste de surveillance")
+            return
+        
+        # Mettre à jour les données pour ces tickers
+        for ticker in weekly_watchlist.keys():
+            try:
+                self.data_fetcher.get_ticker_data(ticker, "1w", force_refresh=True)
+                time.sleep(1)  # Pause pour éviter de surcharger l'API
+            except Exception as e:
+                logger.error(f"Erreur lors de la mise à jour des données pour {ticker}: {e}")
+        
+        # Vérifier les signaux
+        new_signals = self.watchlist_manager.check_watchlist_signals()
+        
+        # Envoyer un résumé si des signaux ont été détectés
+        if new_signals:
+            self.discord_notifier.send_watchlist_summary(new_signals)
+            
+        logger.info(f"Vérification de la liste de surveillance (timeframe hebdomadaire) terminée: {len(new_signals)} nouveaux signaux")
+    
+    def get_watchlist_manager(self) -> WatchlistManager:
+        """
+        Récupère le gestionnaire de liste de surveillance.
+        
+        Returns:
+            Instance de WatchlistManager
+        """
+        return self.watchlist_manager

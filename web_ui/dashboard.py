@@ -27,6 +27,7 @@ from signal_detector.detector import SignalDetector
 from backtest.backtester import Backtester
 from discord_notifier.notifier import DiscordNotifier
 from monitoring_service import MonitoringService
+from watchlist.manager import WatchlistManager
 
 # Configuration du logging
 logging.basicConfig(
@@ -178,6 +179,43 @@ class Dashboard:
         """
         Crée le layout de l'application.
         """
+        # Créer les onglets
+        tabs = dbc.Tabs([
+            dbc.Tab(self._create_dashboard_tab(), label="Tableau de Bord", tab_id="tab-dashboard"),
+            dbc.Tab(self._create_backtest_tab(), label="Backtest", tab_id="tab-backtest"),
+            dbc.Tab(self._create_watchlist_tab(), label="Liste de Surveillance", tab_id="tab-watchlist"),
+            dbc.Tab(self._create_settings_tab(), label="Paramètres", tab_id="tab-settings")
+        ], id="tabs", active_tab="tab-dashboard")
+        
+        # Créer le layout principal
+        self.app.layout = dbc.Container([
+            dbc.Row([
+                dbc.Col([
+                    html.H1(config.APP_CONFIG["title"], className="text-center my-4"),
+                    html.Hr()
+                ])
+            ]),
+            
+            dbc.Row([
+                dbc.Col([
+                    tabs
+                ])
+            ]),
+            
+            # Pied de page
+            dbc.Row([
+                dbc.Col([
+                    html.Hr(),
+                    html.P(
+                        "TvBin - Analyse technique des cryptomonnaies avec ZLMA Trend Levels",
+                        className="text-center text-muted"
+                    )
+                ])
+            ])
+        ], fluid=True)
+    
+    def _create_dashboard_tab(self):
+        """Crée l'onglet du tableau de bord."""
         # Créer les options pour les cryptos
         crypto_options = []
         
@@ -188,14 +226,7 @@ class Dashboard:
         for symbol in config.CRYPTO_TICKERS:
             crypto_options.append({"label": f"{symbol}", "value": symbol})
         
-        self.app.layout = dbc.Container([
-            dbc.Row([
-                dbc.Col([
-                    html.H1(config.APP_CONFIG["title"], className="text-center my-4"),
-                    html.Hr()
-                ])
-            ]),
-            
+        return dbc.Container([
             dbc.Row([
                 dbc.Col([
                     dbc.Card([
@@ -338,16 +369,172 @@ class Dashboard:
                         ])
                     ], className="mb-4 card-crypto")
                 ], width=6)
-            ]),
+            ])
+        ], fluid=True)
+    
+    def _create_backtest_tab(self):
+        """Crée l'onglet de backtest."""
+        return dbc.Container([
+            html.H2("Backtest", className="mb-4"),
+            html.P("Testez vos stratégies de trading sur des données historiques."),
             
-            # Pied de page
-            dbc.Row([
-                dbc.Col([
-                    html.Hr(),
-                    html.P(
-                        "TvBin - Analyse technique des cryptomonnaies avec ZLMA Trend Levels",
-                        className="text-center text-muted"
+            dbc.Card([
+                dbc.CardHeader("Configuration du Backtest"),
+                dbc.CardBody([
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Label("Sélection de Crypto"),
+                            dcc.Dropdown(
+                                id="backtest-symbol-dropdown",
+                                options=[{"label": ticker, "value": ticker} for ticker in config.CRYPTO_TICKERS],
+                                value="BTC",
+                                clearable=False
+                            )
+                        ], width=6),
+                        dbc.Col([
+                            dbc.Label("Intervalle de temps"),
+                            dcc.Dropdown(
+                                id="backtest-timeframe-dropdown",
+                                options=[
+                                    {"label": "12 Heures", "value": "12h"},
+                                    {"label": "Journalier", "value": "1d"},
+                                    {"label": "Hebdomadaire", "value": "1w"}
+                                ],
+                                value="1d",
+                                clearable=False
+                            )
+                        ], width=6)
+                    ]),
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Label("Date de début"),
+                            dcc.DatePickerSingle(
+                                id="backtest-start-date",
+                                date=(datetime.now() - timedelta(days=180)).date(),
+                                display_format="YYYY-MM-DD"
+                            )
+                        ], width=6),
+                        dbc.Col([
+                            dbc.Label("Date de fin"),
+                            dcc.DatePickerSingle(
+                                id="backtest-end-date",
+                                date=datetime.now().date(),
+                                display_format="YYYY-MM-DD"
+                            )
+                        ], width=6)
+                    ], className="mt-3"),
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Button(
+                                "Lancer le Backtest",
+                                id="run-backtest-button",
+                                color="primary",
+                                className="mt-3"
+                            )
+                        ])
+                    ])
+                ])
+            ], className="mb-4"),
+            
+            # Résultats du backtest
+            dbc.Card([
+                dbc.CardHeader("Résultats du Backtest"),
+                dbc.CardBody([
+                    dcc.Loading(
+                        id="loading-backtest",
+                        type="circle",
+                        children=[
+                            html.Div(id="backtest-results")
+                        ]
                     )
+                ])
+            ])
+        ], fluid=True)
+    
+    def _create_settings_tab(self):
+        """Crée l'onglet des paramètres."""
+        return dbc.Container([
+            html.H2("Paramètres", className="mb-4"),
+            html.P("Configurez les paramètres de l'application."),
+            
+            dbc.Card([
+                dbc.CardHeader("Service de Surveillance"),
+                dbc.CardBody([
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Button(
+                                "Démarrer/Arrêter le Service",
+                                id="monitoring-button",
+                                color="primary"
+                            ),
+                            html.Div(id="monitoring-status", className="mt-3")
+                        ])
+                    ])
+                ])
+            ], className="mb-4"),
+            
+            dbc.Card([
+                dbc.CardHeader("Notifications Discord"),
+                dbc.CardBody([
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Label("Webhook URL"),
+                            dbc.Input(
+                                id="discord-webhook-input",
+                                type="text",
+                                value=config.DISCORD_WEBHOOK,
+                                placeholder="Entrez l'URL du webhook Discord"
+                            )
+                        ])
+                    ]),
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Button(
+                                "Tester la Notification",
+                                id="test-discord-button",
+                                color="primary",
+                                className="mt-3"
+                            ),
+                            html.Div(id="discord-test-result", className="mt-2")
+                        ])
+                    ])
+                ])
+            ], className="mb-4"),
+            
+            dbc.Card([
+                dbc.CardHeader("Paramètres API Binance"),
+                dbc.CardBody([
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Label("API Key"),
+                            dbc.Input(
+                                id="binance-api-key-input",
+                                type="password",
+                                value=config.BINANCE_API_KEY,
+                                placeholder="Entrez votre clé API Binance"
+                            )
+                        ], width=6),
+                        dbc.Col([
+                            dbc.Label("API Secret"),
+                            dbc.Input(
+                                id="binance-api-secret-input",
+                                type="password",
+                                value=config.BINANCE_API_SECRET,
+                                placeholder="Entrez votre secret API Binance"
+                            )
+                        ], width=6)
+                    ]),
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Button(
+                                "Sauvegarder",
+                                id="save-binance-button",
+                                color="primary",
+                                className="mt-3"
+                            ),
+                            html.Div(id="binance-save-result", className="mt-2")
+                        ])
+                    ])
                 ])
             ])
         ], fluid=True)
@@ -650,6 +837,165 @@ class Dashboard:
             
             return fig, signals_content, last_update_content, volume_content, trend_content, alert
         
+        # Callback pour le backtest
+        @self.app.callback(
+            Output("backtest-results", "children"),
+            [Input("run-backtest-button", "n_clicks")],
+            [
+                State("backtest-symbol-dropdown", "value"),
+                State("backtest-timeframe-dropdown", "value"),
+                State("backtest-start-date", "date"),
+                State("backtest-end-date", "date")
+            ]
+        )
+        def run_backtest(n_clicks, symbol, timeframe, start_date, end_date):
+            """
+            Exécute le backtest avec les paramètres sélectionnés.
+            """
+            if n_clicks is None:
+                raise PreventUpdate
+            
+            # Exécuter le backtest
+            results = self.backtester.run_backtest(
+                ticker=symbol,
+                timeframe=timeframe,
+                start_date=start_date,
+                end_date=end_date
+            )
+            
+            if not results["success"]:
+                return dbc.Alert(
+                    f"Erreur lors du backtest: {results['error']}",
+                    color="danger",
+                    dismissable=True
+                )
+            
+            # Créer le résumé des résultats
+            stats = results["results"]
+            
+            summary = dbc.Card([
+                dbc.CardHeader("Résumé du Backtest"),
+                dbc.CardBody([
+                    dbc.Row([
+                        dbc.Col([
+                            html.H5("Performance"),
+                            html.Hr(),
+                            html.P([
+                                html.Strong("Capital initial: "),
+                                f"{stats['initial_capital']:,.2f} USDT"
+                            ]),
+                            html.P([
+                                html.Strong("Capital final: "),
+                                f"{stats['final_capital']:,.2f} USDT"
+                            ]),
+                            html.P([
+                                html.Strong("Rendement total: "),
+                                html.Span(
+                                    f"{stats['total_return']:,.2f}%",
+                                    style={
+                                        "color": "green" if stats['total_return'] > 0 else "red",
+                                        "font-weight": "bold"
+                                    }
+                                )
+                            ]),
+                            html.P([
+                                html.Strong("Drawdown maximum: "),
+                                f"{stats['max_drawdown']:,.2f}%"
+                            ])
+                        ], width=6),
+                        dbc.Col([
+                            html.H5("Statistiques des Trades"),
+                            html.Hr(),
+                            html.P([
+                                html.Strong("Nombre total de trades: "),
+                                f"{stats['total_trades']}"
+                            ]),
+                            html.P([
+                                html.Strong("Trades gagnants: "),
+                                f"{stats['winning_trades']}"
+                            ]),
+                            html.P([
+                                html.Strong("Trades perdants: "),
+                                f"{stats['losing_trades']}"
+                            ]),
+                            html.P([
+                                html.Strong("Taux de réussite: "),
+                                f"{stats['win_rate']:,.2f}%"
+                            ]),
+                            html.P([
+                                html.Strong("Gain moyen: "),
+                                f"{stats['avg_win']:,.2f} USDT"
+                            ]),
+                            html.P([
+                                html.Strong("Perte moyenne: "),
+                                f"{stats['avg_loss']:,.2f} USDT"
+                            ])
+                        ], width=6)
+                    ])
+                ])
+            ])
+            
+            # Créer le tableau des trades
+            trades = stats["trades"]
+            if trades:
+                trades_table = dbc.Table(
+                    [
+                        html.Thead(
+                            html.Tr([
+                                html.Th("Date d'entrée"),
+                                html.Th("Prix d'entrée"),
+                                html.Th("Direction"),
+                                html.Th("Date de sortie"),
+                                html.Th("Prix de sortie"),
+                                html.Th("P&L"),
+                                html.Th("P&L %")
+                            ])
+                        ),
+                        html.Tbody([
+                            html.Tr([
+                                html.Td(trade["date_entry"]),
+                                html.Td(f"{trade['price_entry']:.2f}"),
+                                html.Td(
+                                    trade["direction"],
+                                    style={
+                                        "color": "green" if trade["direction"] == "LONG" else "red",
+                                        "font-weight": "bold"
+                                    }
+                                ),
+                                html.Td(trade.get("date_exit", "En cours")),
+                                html.Td(f"{trade.get('price_exit', 0):.2f}"),
+                                html.Td(
+                                    f"{trade.get('pnl', 0):,.2f}",
+                                    style={
+                                        "color": "green" if trade.get('pnl', 0) > 0 else "red",
+                                        "font-weight": "bold"
+                                    }
+                                ),
+                                html.Td(
+                                    f"{trade.get('pnl_pct', 0):,.2f}%",
+                                    style={
+                                        "color": "green" if trade.get('pnl_pct', 0) > 0 else "red",
+                                        "font-weight": "bold"
+                                    }
+                                )
+                            ]) for trade in trades
+                        ])
+                    ],
+                    bordered=True,
+                    hover=True,
+                    responsive=True,
+                    striped=True,
+                    className="mt-4"
+                )
+            else:
+                trades_table = html.P("Aucun trade effectué pendant la période.")
+            
+            return html.Div([
+                summary,
+                html.H5("Détail des Trades", className="mt-4"),
+                trades_table
+            ])
+        
         # Callback pour démarrer/arrêter le service de surveillance
         @self.app.callback(
             Output("monitoring-status", "children"),
@@ -670,3 +1016,405 @@ class Dashboard:
                 # Arrêter le service
                 self.monitoring_service.stop()
                 return "Service de surveillance: Arrêté"
+        
+        # Initialiser les callbacks pour la liste de surveillance
+        self._setup_callbacks()
+
+    def _create_watchlist_tab(self):
+        """Crée l'onglet de liste de surveillance."""
+        # Sélecteur de tickers
+        ticker_selector = dbc.Card([
+            dbc.CardHeader("Ajouter des Tickers à la Liste de Surveillance"),
+            dbc.CardBody([
+                dbc.Row([
+                    dbc.Col([
+                        html.Label("Sélectionner des Tickers:"),
+                        dcc.Dropdown(
+                            id="watchlist-ticker-dropdown",
+                            options=[{"label": ticker, "value": ticker} for ticker in config.CRYPTO_TICKERS],
+                            multi=True,
+                            placeholder="Sélectionner un ou plusieurs tickers..."
+                        )
+                    ], width=8),
+                    dbc.Col([
+                        html.Label("Timeframe:"),
+                        dcc.RadioItems(
+                            id="watchlist-timeframe-radio",
+                            options=[
+                                {"label": "Journalier (1d)", "value": "1d"},
+                                {"label": "Hebdomadaire (1w)", "value": "1w"}
+                            ],
+                            value="1d",
+                            labelStyle={"display": "block", "margin-bottom": "10px"}
+                        )
+                    ], width=4)
+                ]),
+                dbc.Row([
+                    dbc.Col([
+                        dbc.Button(
+                            "Ajouter à la Liste de Surveillance",
+                            id="add-to-watchlist-button",
+                            color="primary",
+                            className="mt-3"
+                        ),
+                        html.Div(id="watchlist-add-message", className="mt-2")
+                    ])
+                ])
+            ])
+        ], className="mb-4")
+        
+        # Tableau de la liste de surveillance
+        watchlist_table = dbc.Card([
+            dbc.CardHeader("Liste de Surveillance"),
+            dbc.CardBody([
+                html.Div(id="watchlist-table-container", children=[
+                    html.P("Aucun ticker dans la liste de surveillance.", id="empty-watchlist-message"),
+                    dbc.Table(
+                        [
+                            html.Thead(
+                                html.Tr([
+                                    html.Th("Ticker"),
+                                    html.Th("Timeframe"),
+                                    html.Th("Dernier Signal"),
+                                    html.Th("Date du Signal"),
+                                    html.Th("Notifications"),
+                                    html.Th("Actions")
+                                ])
+                            ),
+                            html.Tbody(id="watchlist-table-body")
+                        ],
+                        id="watchlist-table",
+                        bordered=True,
+                        hover=True,
+                        responsive=True,
+                        striped=True,
+                        className="d-none"
+                    )
+                ])
+            ])
+        ])
+        
+        # Mettre à jour le contenu de la liste de surveillance
+        interval = dcc.Interval(
+            id="watchlist-update-interval",
+            interval=60 * 1000,  # Mettre à jour toutes les minutes
+            n_intervals=0
+        )
+        
+        return dbc.Container([
+            html.H2("Liste de Surveillance", className="mb-4"),
+            html.P("Ajoutez des tickers à surveiller et recevez des notifications Discord en cas de croisement."),
+            ticker_selector,
+            watchlist_table,
+            interval
+        ], fluid=True)
+
+    def _setup_callbacks(self):
+        """Configure les callbacks de l'application."""
+        # Callbacks pour la liste de surveillance
+        @self.app.callback(
+            [Output("watchlist-add-message", "children"),
+             Output("watchlist-table-body", "children"),
+             Output("watchlist-table", "className"),
+             Output("empty-watchlist-message", "className")],
+            [Input("add-to-watchlist-button", "n_clicks"),
+             Input("watchlist-update-interval", "n_intervals")],
+            [State("watchlist-ticker-dropdown", "value"),
+             State("watchlist-timeframe-radio", "value")]
+        )
+        def update_watchlist(n_clicks, n_intervals, selected_tickers, timeframe):
+            """Met à jour la liste de surveillance."""
+            ctx = dash.callback_context
+            triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
+            
+            # Récupérer la liste de surveillance actuelle
+            watchlist = self.monitoring_service.get_watchlist_manager().get_watchlist()
+            
+            # Ajouter des tickers à la liste de surveillance
+            if triggered_id == "add-to-watchlist-button" and n_clicks and selected_tickers:
+                success_count = 0
+                error_count = 0
+                
+                for ticker in selected_tickers:
+                    if self.monitoring_service.get_watchlist_manager().add_to_watchlist(ticker, timeframe):
+                        # Récupérer les données et calculer le dernier signal
+                        try:
+                            # Détecter les signaux avec le SignalDetector
+                            signals = self.signal_detector.detect_signals(ticker, timeframe)
+                            if signals and signals["last_signal"]:
+                                last_signal = signals["last_signal"]["signal"]
+                                last_signal_date = signals["last_signal"]["date"]
+                                
+                                # Mettre à jour le signal dans la watchlist
+                                self.monitoring_service.get_watchlist_manager().update_signal(
+                                    ticker,
+                                    last_signal,
+                                    last_signal_date
+                                )
+                        except Exception as e:
+                            logger.error(f"Erreur lors de la récupération des signaux pour {ticker}: {e}")
+                        
+                        success_count += 1
+                    else:
+                        error_count += 1
+                
+                # Mettre à jour la liste de surveillance
+                watchlist = self.monitoring_service.get_watchlist_manager().get_watchlist()
+                
+                # Créer le message de confirmation
+                if success_count > 0 and error_count == 0:
+                    message = dbc.Alert(f"{success_count} ticker(s) ajouté(s) à la liste de surveillance.", color="success")
+                elif success_count > 0 and error_count > 0:
+                    message = dbc.Alert(f"{success_count} ticker(s) ajouté(s), {error_count} erreur(s).", color="warning")
+                else:
+                    message = dbc.Alert(f"Erreur: Impossible d'ajouter les tickers à la liste de surveillance.", color="danger")
+            else:
+                message = None
+                
+                # Mettre à jour les signaux pour tous les tickers si c'est une mise à jour périodique
+                if triggered_id == "watchlist-update-interval":
+                    for ticker, info in watchlist.items():
+                        try:
+                            # Détecter les signaux avec le SignalDetector
+                            signals = self.signal_detector.detect_signals(ticker, info["timeframe"])
+                            if signals and signals["last_signal"]:
+                                last_signal = signals["last_signal"]["signal"]
+                                last_signal_date = signals["last_signal"]["date"]
+                                
+                                # Mettre à jour le signal dans la watchlist
+                                self.monitoring_service.get_watchlist_manager().update_signal(
+                                    ticker,
+                                    last_signal,
+                                    last_signal_date
+                                )
+                        except Exception as e:
+                            logger.error(f"Erreur lors de la mise à jour des signaux pour {ticker}: {e}")
+            
+            # Créer les lignes du tableau
+            rows = []
+            
+            for ticker, info in watchlist.items():
+                # Déterminer le type de signal et la tendance
+                signal = info["last_signal"]
+                if signal == 1:
+                    signal_text = "HAUSSIER 📈"
+                    signal_color = "success"
+                    trend_text = "Tendance haussière"
+                elif signal == -1:
+                    signal_text = "BAISSIER 📉"
+                    signal_color = "danger"
+                    trend_text = "Tendance baissière"
+                else:
+                    signal_text = "AUCUN"
+                    signal_color = "secondary"
+                    trend_text = "Pas de tendance"
+                
+                # Déterminer le timeframe
+                timeframe_text = "Journalier" if info["timeframe"] == "1d" else "Hebdomadaire"
+                
+                # Déterminer l'état des notifications
+                notifications_enabled = info["notifications_enabled"]
+                notifications_text = "Activées" if notifications_enabled else "Désactivées"
+                notifications_color = "success" if notifications_enabled else "danger"
+                
+                # Formater la date du signal
+                signal_date = info["last_signal_date"] if info["last_signal_date"] else "N/A"
+                
+                # Créer la ligne du tableau avec la tendance
+                row = html.Tr([
+                    html.Td(ticker),
+                    html.Td(timeframe_text),
+                    html.Td([
+                        dbc.Badge(signal_text, color=signal_color, className="p-2"),
+                        html.Div(trend_text, className="small text-muted mt-1")
+                    ]),
+                    html.Td(signal_date),
+                    html.Td(dbc.Badge(notifications_text, color=notifications_color, className="p-2")),
+                    html.Td([
+                        dbc.ButtonGroup([
+                            dbc.Button(
+                                "Notifications",
+                                id={"type": "toggle-notifications-button", "index": ticker},
+                                color="primary",
+                                size="sm",
+                                className="me-1"
+                            ),
+                            dbc.Button(
+                                "Supprimer",
+                                id={"type": "remove-from-watchlist-button", "index": ticker},
+                                color="danger",
+                                size="sm"
+                            )
+                        ])
+                    ])
+                ])
+                
+                rows.append(row)
+            
+            # Déterminer si le tableau doit être affiché
+            if rows:
+                table_class = "table"
+                empty_message_class = "d-none"
+            else:
+                table_class = "d-none"
+                empty_message_class = ""
+            
+            return message, rows, table_class, empty_message_class
+        
+        @self.app.callback(
+            Output("watchlist-table-body", "children", allow_duplicate=True),
+            Input({"type": "toggle-notifications-button", "index": ALL}, "n_clicks"),
+            prevent_initial_call=True
+        )
+        def toggle_notifications(n_clicks):
+            """Active ou désactive les notifications pour un ticker."""
+            if not any(n_clicks):
+                raise PreventUpdate
+            
+            ctx = dash.callback_context
+            button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+            ticker = json.loads(button_id)["index"]
+            
+            # Activer ou désactiver les notifications
+            self.monitoring_service.get_watchlist_manager().toggle_notifications(ticker)
+            
+            # Mettre à jour la liste de surveillance
+            watchlist = self.monitoring_service.get_watchlist_manager().get_watchlist()
+            
+            # Créer les lignes du tableau
+            rows = []
+            
+            for ticker, info in watchlist.items():
+                # Déterminer le type de signal
+                signal = info["last_signal"]
+                if signal == 1:
+                    signal_text = "HAUSSIER 📈"
+                    signal_color = "success"
+                elif signal == -1:
+                    signal_text = "BAISSIER 📉"
+                    signal_color = "danger"
+                else:
+                    signal_text = "AUCUN"
+                    signal_color = "secondary"
+                
+                # Déterminer le timeframe
+                timeframe_text = "Journalier" if info["timeframe"] == "1d" else "Hebdomadaire"
+                
+                # Déterminer l'état des notifications
+                notifications_enabled = info["notifications_enabled"]
+                notifications_text = "Activées" if notifications_enabled else "Désactivées"
+                notifications_color = "success" if notifications_enabled else "danger"
+                
+                # Créer la ligne du tableau
+                row = html.Tr([
+                    html.Td(ticker),
+                    html.Td(timeframe_text),
+                    html.Td(dbc.Badge(signal_text, color=signal_color, className="p-2")),
+                    html.Td(info["last_signal_date"] or "N/A"),
+                    html.Td(dbc.Badge(notifications_text, color=notifications_color, className="p-2")),
+                    html.Td([
+                        dbc.ButtonGroup([
+                            dbc.Button(
+                                "Notifications",
+                                id={"type": "toggle-notifications-button", "index": ticker},
+                                color="primary",
+                                size="sm",
+                                className="me-1"
+                            ),
+                            dbc.Button(
+                                "Supprimer",
+                                id={"type": "remove-from-watchlist-button", "index": ticker},
+                                color="danger",
+                                size="sm"
+                            )
+                        ])
+                    ])
+                ])
+                
+                rows.append(row)
+            
+            return rows
+        
+        @self.app.callback(
+            [Output("watchlist-table-body", "children", allow_duplicate=True),
+             Output("watchlist-table", "className", allow_duplicate=True),
+             Output("empty-watchlist-message", "className", allow_duplicate=True)],
+            Input({"type": "remove-from-watchlist-button", "index": ALL}, "n_clicks"),
+            prevent_initial_call=True
+        )
+        def remove_from_watchlist(n_clicks):
+            """Supprime un ticker de la liste de surveillance."""
+            if not any(n_clicks):
+                raise PreventUpdate
+            
+            ctx = dash.callback_context
+            button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+            ticker = json.loads(button_id)["index"]
+            
+            # Supprimer le ticker de la liste de surveillance
+            self.monitoring_service.get_watchlist_manager().remove_from_watchlist(ticker)
+            
+            # Mettre à jour la liste de surveillance
+            watchlist = self.monitoring_service.get_watchlist_manager().get_watchlist()
+            
+            # Créer les lignes du tableau
+            rows = []
+            
+            for ticker, info in watchlist.items():
+                # Déterminer le type de signal
+                signal = info["last_signal"]
+                if signal == 1:
+                    signal_text = "HAUSSIER 📈"
+                    signal_color = "success"
+                elif signal == -1:
+                    signal_text = "BAISSIER 📉"
+                    signal_color = "danger"
+                else:
+                    signal_text = "AUCUN"
+                    signal_color = "secondary"
+                
+                # Déterminer le timeframe
+                timeframe_text = "Journalier" if info["timeframe"] == "1d" else "Hebdomadaire"
+                
+                # Déterminer l'état des notifications
+                notifications_enabled = info["notifications_enabled"]
+                notifications_text = "Activées" if notifications_enabled else "Désactivées"
+                notifications_color = "success" if notifications_enabled else "danger"
+                
+                # Créer la ligne du tableau
+                row = html.Tr([
+                    html.Td(ticker),
+                    html.Td(timeframe_text),
+                    html.Td(dbc.Badge(signal_text, color=signal_color, className="p-2")),
+                    html.Td(info["last_signal_date"] or "N/A"),
+                    html.Td(dbc.Badge(notifications_text, color=notifications_color, className="p-2")),
+                    html.Td([
+                        dbc.ButtonGroup([
+                            dbc.Button(
+                                "Notifications",
+                                id={"type": "toggle-notifications-button", "index": ticker},
+                                color="primary",
+                                size="sm",
+                                className="me-1"
+                            ),
+                            dbc.Button(
+                                "Supprimer",
+                                id={"type": "remove-from-watchlist-button", "index": ticker},
+                                color="danger",
+                                size="sm"
+                            )
+                        ])
+                    ])
+                ])
+                
+                rows.append(row)
+            
+            # Déterminer si le tableau doit être affiché
+            if rows:
+                table_class = "table"
+                empty_message_class = "d-none"
+            else:
+                table_class = "d-none"
+                empty_message_class = ""
+            
+            return rows, table_class, empty_message_class

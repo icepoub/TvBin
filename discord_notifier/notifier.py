@@ -169,3 +169,107 @@ class DiscordNotifier:
             content=f"⚠️ Alerte : Le ticker {symbol} n'a pas pu être trouvé sur Binance",
             embeds=[embed]
         )
+    
+    def send_watchlist_notification(self, ticker: str, timeframe: str, signal: int, date: str) -> bool:
+        """
+        Envoie une notification Discord pour un signal de la liste de surveillance.
+        
+        Args:
+            ticker: Symbole de la cryptomonnaie
+            timeframe: Timeframe du signal
+            signal: Type de signal (1: haussier, -1: baissier)
+            date: Date du signal
+            
+        Returns:
+            True si la notification a été envoyée avec succès, False sinon
+        """
+        try:
+            # Créer le message
+            signal_type = "HAUSSIER 📈" if signal == 1 else "BAISSIER 📉"
+            timeframe_str = "journalier" if timeframe == "1d" else "hebdomadaire"
+            
+            message = f"🚨 **Alerte de la Liste de Surveillance** 🚨\n\n"
+            message += f"**Ticker:** {ticker}\n"
+            message += f"**Timeframe:** {timeframe_str}\n"
+            message += f"**Signal:** {signal_type}\n"
+            message += f"**Date:** {date}\n"
+            
+            # Créer l'embed
+            color = 0x00FF00 if signal == 1 else 0xFF0000  # Vert pour haussier, rouge pour baissier
+            
+            embed = {
+                "title": f"Signal {signal_type} pour {ticker}",
+                "description": f"Un signal {signal_type.lower()} a été détecté pour {ticker} sur le timeframe {timeframe_str}.",
+                "color": color,
+                "fields": [
+                    {
+                        "name": "Ticker",
+                        "value": ticker,
+                        "inline": True
+                    },
+                    {
+                        "name": "Timeframe",
+                        "value": timeframe_str,
+                        "inline": True
+                    },
+                    {
+                        "name": "Signal",
+                        "value": signal_type,
+                        "inline": True
+                    },
+                    {
+                        "name": "Date",
+                        "value": date,
+                        "inline": False
+                    }
+                ],
+                "footer": {
+                    "text": f"TvBin - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+                }
+            }
+            
+            # Envoyer le message avec l'embed
+            return self.send_message(message, [embed])
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de l'envoi de la notification pour {ticker}: {e}")
+            return False
+    
+    def send_watchlist_summary(self, new_signals: List[Dict]) -> bool:
+        """
+        Envoie un résumé des nouveaux signaux de la liste de surveillance.
+        
+        Args:
+            new_signals: Liste des nouveaux signaux
+            
+        Returns:
+            True si le résumé a été envoyé avec succès, False sinon
+        """
+        if not new_signals:
+            return True
+        
+        try:
+            # Créer le message
+            message = f"📊 **Résumé des Signaux de la Liste de Surveillance** 📊\n\n"
+            message += f"**Nombre de nouveaux signaux:** {len(new_signals)}\n\n"
+            
+            # Ajouter les signaux au message
+            for i, signal in enumerate(new_signals, 1):
+                ticker = signal["ticker"]
+                timeframe = signal["timeframe"]
+                signal_value = signal["signal"]
+                date = signal["date"]
+                
+                signal_type = "HAUSSIER 📈" if signal_value == 1 else "BAISSIER 📉"
+                timeframe_str = "journalier" if timeframe == "1d" else "hebdomadaire"
+                
+                message += f"**{i}. {ticker} - {timeframe_str}**\n"
+                message += f"   Signal: {signal_type}\n"
+                message += f"   Date: {date}\n\n"
+            
+            # Envoyer le message
+            return self.send_message(message)
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de l'envoi du résumé des signaux: {e}")
+            return False

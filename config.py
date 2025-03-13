@@ -33,8 +33,8 @@ INDICATOR_CONFIG = {
 }
 
 # Configuration Binance
-BINANCE_API_KEY = ""  # À remplir avec votre clé API
-BINANCE_API_SECRET = ""  # À remplir avec votre secret API
+BINANCE_API_KEY = "iYYM8Zrx1BZiR721a9P9etq7CP1V5E0uNWr3uqhbadUVgivVVmFLA3kDUOFMc8Xy"  # Clé API Binance testnet
+BINANCE_API_SECRET = "VLoOAPmBSTRChBnf4UrCSnzPg9sHwhaKMlTllGJHd8hXeJBjX0KIfPTwO1uPjYpr"  # Secret API Binance testnet
 BINANCE_TLD = "com"  # com pour binance.com, us pour binance.us
 
 # Configuration des paires de base
