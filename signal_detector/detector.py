@@ -105,7 +105,7 @@ class SignalDetector:
         }
         
         # Sauvegarder les signaux
-        if save_signals:
+        if save_signals and last_signal and last_signal["signal"] != 0:
             self._save_signal(symbol, timeframe, last_signal, data['Close'].iloc[-1])
         
         return result
@@ -167,6 +167,9 @@ class SignalDetector:
         elif timeframe == "1w":
             # Signaux de la dernière semaine
             active_signals = signals[signals['date'] >= pd.Timestamp(now.date()).floor('D') - pd.Timedelta(days=7)]
+        elif timeframe == "12h":
+            # Signaux des dernières 12h
+            active_signals = signals[signals['date'] >= pd.Timestamp(now) - pd.Timedelta(hours=12)]
         else:
             active_signals = signals
         
@@ -276,18 +279,24 @@ class SignalDetector:
                 "total_signals": 0,
                 "bullish_signals": 0,
                 "bearish_signals": 0,
-                "latest_signals": []
+                "last_signal_date": None
             }
         
-        # Convertir la date en datetime
-        self.signals_history['date'] = pd.to_datetime(self.signals_history['date'])
+        # Convertir la date en datetime si nécessaire
+        if not pd.api.types.is_datetime64_any_dtype(self.signals_history['date']):
+            self.signals_history['date'] = pd.to_datetime(self.signals_history['date'])
         
-        # Trier par date décroissante
-        sorted_signals = self.signals_history.sort_values('date', ascending=False)
+        # Calculer les statistiques
+        total_signals = len(self.signals_history)
+        bullish_signals = len(self.signals_history[self.signals_history['signal'] == 1])
+        bearish_signals = len(self.signals_history[self.signals_history['signal'] == -1])
+        
+        # Récupérer la date du dernier signal
+        last_signal_date = self.signals_history['date'].max().strftime('%Y-%m-%d') if not self.signals_history.empty else None
         
         return {
-            "total_signals": len(self.signals_history),
-            "bullish_signals": len(self.signals_history[self.signals_history['signal'] == 1]),
-            "bearish_signals": len(self.signals_history[self.signals_history['signal'] == -1]),
-            "latest_signals": sorted_signals.head(10).to_dict('records')
+            "total_signals": total_signals,
+            "bullish_signals": bullish_signals,
+            "bearish_signals": bearish_signals,
+            "last_signal_date": last_signal_date
         }
