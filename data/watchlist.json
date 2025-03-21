@@ -1,0 +1,8 @@
+{
+    "BTC": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-03-17 12:32:29"
+    }
+}

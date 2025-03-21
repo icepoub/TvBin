@@ -42,14 +42,14 @@ BASE_PAIRS = ["USDT", "USDC"]
 DEFAULT_BASE_PAIR = "USDT"
 
 # Configuration Discord
-DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1347182212839243816/8MiWiqEfyDBlQbvFhgmGN3ZmH1vGFqJhs8Gk_VRdWqL9bseatWbGRBoPYJTyCq-nNCVi"
+DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1349759237663883314/xd34KYdFL5jfTEfGr7Bu4gkaPUjWHns-ewIDWtZdK6FdehPhRJ4mGpz2N3H9MF7kfqNy"
 
 # Ticker par défaut
 DEFAULT_TICKER = "BTC"  # Bitcoin
 
 # Liste des 200 premières cryptos (à remplacer par les vraies données de CoinMarketCap)
 CRYPTO_TICKERS = [
-    "BTC", "ETH", "BNB", "SOL", "XRP", "USDT", "USDC", "ADA", "AVAX", "DOGE",
+    "BTC", "ETH", "BNB", "SOL", "XRP", "ADA", "AVAX", "DOGE",
     "DOT", "MATIC", "SHIB", "LTC", "UNI", "LINK", "XLM", "ATOM", "BCH", "CRO",
     "ALGO", "NEAR", "FIL", "VET", "ICP", "MANA", "SAND", "AXS", "HBAR", "XTZ",
     "EOS", "EGLD", "THETA", "AAVE", "ETC", "XMR", "CAKE", "GRT", "FTM", "FLOW",

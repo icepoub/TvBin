@@ -187,8 +187,12 @@ class Dashboard:
             dbc.Tab(self._create_settings_tab(), label="Paramètres", tab_id="tab-settings")
         ], id="tabs", active_tab="tab-dashboard")
         
+        # Store pour stocker les valeurs à transmettre entre les onglets
+        store = dcc.Store(id='tab-navigation-store')
+        
         # Créer le layout principal
         self.app.layout = dbc.Container([
+            store,
             dbc.Row([
                 dbc.Col([
                     html.H1(config.APP_CONFIG["title"], className="text-center my-4"),
@@ -1022,32 +1026,42 @@ class Dashboard:
 
     def _create_watchlist_tab(self):
         """Crée l'onglet de liste de surveillance."""
-        # Sélecteur de tickers
+        # Sélecteur de ticker
         ticker_selector = dbc.Card([
-            dbc.CardHeader("Ajouter des Tickers à la Liste de Surveillance"),
+            dbc.CardHeader("Ajouter un Ticker"),
             dbc.CardBody([
                 dbc.Row([
                     dbc.Col([
-                        html.Label("Sélectionner des Tickers:"),
-                        dcc.Dropdown(
-                            id="watchlist-ticker-dropdown",
-                            options=[{"label": ticker, "value": ticker} for ticker in config.CRYPTO_TICKERS],
-                            multi=True,
-                            placeholder="Sélectionner un ou plusieurs tickers..."
-                        )
-                    ], width=8),
+                        dbc.Label("Sélectionner un ou plusieurs tickers"),
+                        html.Div([
+                            dcc.Dropdown(
+                                id="watchlist-ticker-dropdown",
+                                options=[{"label": ticker, "value": ticker} for ticker in config.CRYPTO_TICKERS],
+                                value=[],
+                                multi=True,
+                                placeholder="Sélectionnez des tickers..."
+                            ),
+                            dbc.Button(
+                                "Sélectionner Tous",
+                                id="select-all-tickers-button",
+                                color="secondary",
+                                size="sm",
+                                className="mt-2"
+                            )
+                        ])
+                    ], width=6),
                     dbc.Col([
-                        html.Label("Timeframe:"),
-                        dcc.RadioItems(
+                        dbc.Label("Timeframe"),
+                        dbc.RadioItems(
                             id="watchlist-timeframe-radio",
                             options=[
-                                {"label": "Journalier (1d)", "value": "1d"},
-                                {"label": "Hebdomadaire (1w)", "value": "1w"}
+                                {"label": "Journalier", "value": "1d"},
+                                {"label": "Hebdomadaire", "value": "1w"}
                             ],
                             value="1d",
-                            labelStyle={"display": "block", "margin-bottom": "10px"}
+                            inline=True
                         )
-                    ], width=4)
+                    ], width=6)
                 ]),
                 dbc.Row([
                     dbc.Col([
@@ -1129,6 +1143,8 @@ class Dashboard:
             
             # Récupérer la liste de surveillance actuelle
             watchlist = self.monitoring_service.get_watchlist_manager().get_watchlist()
+            # Créer une copie du dictionnaire pour l'itération
+            watchlist_copy = dict(watchlist)
             
             # Ajouter des tickers à la liste de surveillance
             if triggered_id == "add-to-watchlist-button" and n_clicks and selected_tickers:
@@ -1141,16 +1157,19 @@ class Dashboard:
                         try:
                             # Détecter les signaux avec le SignalDetector
                             signals = self.signal_detector.detect_signals(ticker, timeframe)
-                            if signals and signals["last_signal"]:
-                                last_signal = signals["last_signal"]["signal"]
-                                last_signal_date = signals["last_signal"]["date"]
-                                
-                                # Mettre à jour le signal dans la watchlist
-                                self.monitoring_service.get_watchlist_manager().update_signal(
-                                    ticker,
-                                    last_signal,
-                                    last_signal_date
-                                )
+                            if signals and "all_signals" in signals:
+                                # Utiliser le dernier signal de la liste all_signals
+                                last_signal_data = signals["all_signals"][-1] if signals["all_signals"] else None
+                                if last_signal_data:
+                                    last_signal = last_signal_data["signal"]
+                                    last_signal_date = last_signal_data["date"]
+                                    
+                                    # Mettre à jour le signal dans la watchlist
+                                    self.monitoring_service.get_watchlist_manager().update_signal(
+                                        ticker,
+                                        last_signal,
+                                        last_signal_date
+                                    )
                         except Exception as e:
                             logger.error(f"Erreur lors de la récupération des signaux pour {ticker}: {e}")
                         
@@ -1160,6 +1179,7 @@ class Dashboard:
                 
                 # Mettre à jour la liste de surveillance
                 watchlist = self.monitoring_service.get_watchlist_manager().get_watchlist()
+                watchlist_copy = dict(watchlist)
                 
                 # Créer le message de confirmation
                 if success_count > 0 and error_count == 0:
@@ -1173,7 +1193,9 @@ class Dashboard:
                 
                 # Mettre à jour les signaux pour tous les tickers si c'est une mise à jour périodique
                 if triggered_id == "watchlist-update-interval":
-                    for ticker, info in watchlist.items():
+                    # Créer une copie du dictionnaire pour éviter l'erreur de modification pendant l'itération
+                    watchlist_copy = dict(watchlist)
+                    for ticker, info in watchlist_copy.items():
                         try:
                             # Détecter les signaux avec le SignalDetector
                             signals = self.signal_detector.detect_signals(ticker, info["timeframe"])
@@ -1189,11 +1211,35 @@ class Dashboard:
                                 )
                         except Exception as e:
                             logger.error(f"Erreur lors de la mise à jour des signaux pour {ticker}: {e}")
+                    
+                    # Récupérer la liste mise à jour
+                    watchlist = self.monitoring_service.get_watchlist_manager().get_watchlist()
+                    watchlist_copy = dict(watchlist)
             
             # Créer les lignes du tableau
             rows = []
             
-            for ticker, info in watchlist.items():
+            # Convertir le dictionnaire en liste pour le tri
+            watchlist_items = []
+            for ticker, info in watchlist_copy.items():
+                # Convertir la date en objet datetime pour le tri
+                try:
+                    if info["last_signal_date"] and isinstance(info["last_signal_date"], str):
+                        signal_date = datetime.strptime(info["last_signal_date"], "%Y-%m-%d")
+                    elif info["last_signal_date"]:
+                        signal_date = info["last_signal_date"]
+                    else:
+                        signal_date = datetime.min
+                except Exception:
+                    signal_date = datetime.min
+                
+                watchlist_items.append((ticker, info, signal_date))
+            
+            # Trier par date de signal (du plus récent au plus ancien)
+            watchlist_items.sort(key=lambda x: x[2], reverse=True)
+            
+            # Créer les lignes du tableau avec les données triées
+            for ticker, info, _ in watchlist_items:
                 # Déterminer le type de signal et la tendance
                 signal = info["last_signal"]
                 if signal == 1:
@@ -1232,6 +1278,13 @@ class Dashboard:
                     html.Td(dbc.Badge(notifications_text, color=notifications_color, className="p-2")),
                     html.Td([
                         dbc.ButtonGroup([
+                            dbc.Button(
+                                "Voir Graphique",
+                                id={"type": "view-chart-button", "index": f"{ticker}_{info['timeframe']}"},
+                                color="info",
+                                size="sm",
+                                className="me-1"
+                            ),
                             dbc.Button(
                                 "Notifications",
                                 id={"type": "toggle-notifications-button", "index": ticker},
@@ -1418,3 +1471,82 @@ class Dashboard:
                 empty_message_class = ""
             
             return rows, table_class, empty_message_class
+
+        @self.app.callback(
+            Output("discord-test-result", "children"),
+            Output("discord-webhook-input", "value"),
+            [Input("test-discord-button", "n_clicks")],
+            [State("discord-webhook-input", "value")]
+        )
+        def test_discord_notification(n_clicks, webhook_url):
+            """Teste l'envoi d'une notification Discord."""
+            if n_clicks is None:
+                raise PreventUpdate
+            
+            # Mettre à jour l'URL du webhook
+            self.discord_notifier.webhook_url = webhook_url
+            
+            # Envoyer un message de test
+            success = self.discord_notifier.send_message(
+                "🔔 **Test de Notification TvBin**\n\nSi vous voyez ce message, les notifications Discord sont correctement configurées!"
+            )
+            
+            if success:
+                return dbc.Alert(
+                    "Test réussi! Vérifiez votre canal Discord.",
+                    color="success",
+                    dismissable=True,
+                    duration=4000
+                ), webhook_url
+            else:
+                return dbc.Alert(
+                    "Erreur lors de l'envoi du message. Vérifiez l'URL du webhook.",
+                    color="danger",
+                    dismissable=True
+                ), webhook_url
+
+        @self.app.callback(
+            Output("watchlist-ticker-dropdown", "value"),
+            Input("select-all-tickers-button", "n_clicks"),
+            State("watchlist-ticker-dropdown", "options"),
+            prevent_initial_call=True
+        )
+        def select_all_tickers(n_clicks, available_options):
+            """Sélectionne tous les tickers disponibles."""
+            if n_clicks is None:
+                raise PreventUpdate
+            
+            return [option["value"] for option in available_options]
+
+        @self.app.callback(
+            [Output("tabs", "active_tab"),
+             Output("symbol-dropdown", "value"),
+             Output("timeframe-dropdown", "value"),
+             Output("apply-button", "n_clicks", allow_duplicate=True)],
+            [Input("tab-navigation-store", "data")],
+            prevent_initial_call=True
+        )
+        def navigate_to_dashboard(data):
+            """Navigue vers le tableau de bord avec les paramètres spécifiés."""
+            if not data:
+                raise PreventUpdate
+            
+            return "tab-dashboard", data["ticker"], data["timeframe"], 1
+
+        @self.app.callback(
+            [Output("tab-navigation-store", "data"),
+             Output("apply-button", "n_clicks")],
+            [Input({"type": "view-chart-button", "index": ALL}, "n_clicks")],
+            prevent_initial_call=True
+        )
+        def handle_view_chart(n_clicks):
+            """Gère le clic sur le bouton Voir Graphique."""
+            if not any(n_clicks):
+                raise PreventUpdate
+            
+            ctx = dash.callback_context
+            button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+            ticker, timeframe = json.loads(button_id)["index"].split("_")
+            
+            # Retourner les données pour la navigation et simuler un clic sur le bouton Appliquer
+            return {"ticker": ticker, "timeframe": timeframe}, 1
