@@ -4,6 +4,7 @@ Configuration globale pour l'application TvBin.
 from typing import Dict, List, Union
 import os
 from pathlib import Path
+import json
 
 # Chemins de base
 BASE_DIR = Path(__file__).resolve().parent
@@ -47,30 +48,13 @@ DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1349759237663883314/xd34KYdF
 # Ticker par défaut
 DEFAULT_TICKER = "BTC"  # Bitcoin
 
-# Liste des 200 premières cryptos (à remplacer par les vraies données de CoinMarketCap)
-CRYPTO_TICKERS = [
-    "BTC", "ETH", "BNB", "SOL", "XRP", "ADA", "AVAX", "DOGE",
-    "DOT", "MATIC", "SHIB", "LTC", "UNI", "LINK", "XLM", "ATOM", "BCH", "CRO",
-    "ALGO", "NEAR", "FIL", "VET", "ICP", "MANA", "SAND", "AXS", "HBAR", "XTZ",
-    "EOS", "EGLD", "THETA", "AAVE", "ETC", "XMR", "CAKE", "GRT", "FTM", "FLOW",
-    "KCS", "NEO", "KLAY", "QNT", "BSV", "MKR", "HNT", "CHZ", "ONE", "ENJ",
-    "GALA", "WAVES", "ZEC", "DASH", "KSM", "BAT", "CELO", "AR", "ROSE", "COMP",
-    "HOT", "STX", "NEXO", "LRC", "TFUEL", "KAVA", "RVN", "QTUM", "ZIL", "CRV",
-    "YFI", "ANKR", "MINA", "IOTX", "ICX", "OMG", "STORJ", "SRM", "SNX", "IOTA",
-    "1INCH", "GLM", "SUSHI", "XEM", "OCEAN", "AUDIO", "DYDX", "CELR", "ALPHA", "IOST",
-    "BTTC", "HIVE", "REN", "SKL", "SXP", "SC", "ONT", "ZRX", "CTSI", "FET",
-    "POLY", "STMX", "REEF", "COTI", "BNT", "SYS", "BAND", "RAY", "DENT", "RNDR",
-    "PAXG", "DGB", "WAXP", "ARDR", "PERP", "POWR", "BAKE", "NKN", "OGN", "ALICE",
-    "MBOX", "VTHO", "STEEM", "WRX", "PROM", "DUSK", "TWT", "STRAX", "RUNE", "RSR",
-    "MTL", "ERG", "TOMO", "ANT", "BADGER", "FORTH", "LINA", "POND", "TRIBE", "SUPER",
-    "MASK", "AGLD", "POLS", "HARD", "DODO", "VOXEL", "ALCX", "LOKA", "GHST", "WNXM",
-    "ALPACA", "BOND", "FIDA", "FARM", "QUICK", "TOKE", "RARI", "YFII", "MOVR", "GLMR",
-    "ASTR", "SCRT", "SPELL", "PEOPLE", "BICO", "JASMY", "API3", "DEXE", "IDEX", "RARE",
-    "AUCTION", "KEEP", "TRAC", "MITH", "LOOM", "IRIS", "UNFI", "AKRO", "FRONT", "DEGO",
-    "AERGO", "VITE", "NULS", "ORAI", "ARPA", "FIRO", "HXRO", "ORBS", "IOTX", "CTXC",
-    "PIVX", "STPT", "AION", "DOCK", "PERL", "WING", "BURGER", "TROY", "COCOS", "DREP",
-    "BTCST", "LINA", "DODO", "ALICE", "TLM", "FORTH", "PUNDIX", "MIR", "BAR", "MDX"
-]
+# Charger dynamiquement la liste des tickers depuis le fichier JSON
+CRYPTO_TICKERS_PATH = DATA_DIR / "crypto_tickers.json"
+if CRYPTO_TICKERS_PATH.exists():
+    with open(CRYPTO_TICKERS_PATH, "r") as f:
+        CRYPTO_TICKERS = json.load(f)
+else:
+    CRYPTO_TICKERS = []
 
 # Configuration du backtesting
 BACKTEST_CONFIG = {
@@ -99,3 +83,6 @@ UPDATE_CONFIG = {
     "min_update_interval_hours": 12,  # Intervalle minimum entre les mises à jour
     "max_requests_per_minute": 30     # Limite de requêtes API par minute
 }
+
+# Configuration CoinMarketCap
+COINMARKETCAP_API_KEY = "9e0ee532-5e56-421b-97b3-b91a4e68bd2e"

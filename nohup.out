@@ -1,0 +1,25 @@
+Démarrage de l'application TvBin sur le port 8070...
+Traceback (most recent call last):
+  File "/Users/icepoub/Downloads/DevHARD/TvBin/run_on_8070.py", line 31, in <module>
+    main()
+    ~~~~^^
+  File "/Users/icepoub/Downloads/DevHARD/TvBin/run_on_8070.py", line 25, in main
+    dashboard = Dashboard()
+  File "/Users/icepoub/Downloads/DevHARD/TvBin/web_ui/dashboard.py", line 80, in __init__
+    self.tickers_added, self.tickers_removed = self._update_cmc_tickers()
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Dashboard' object has no attribute '_update_cmc_tickers'
+Démarrage de l'application TvBin sur le port 8070...
+Dash is running on http://127.0.0.1:8070/
+
+ * Serving Flask app 'web_ui.dashboard'
+ * Debug mode: on
+/opt/homebrew/Cellar/python@3.13/3.13.2/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/resource_tracker.py:277: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/mp-8sz_ky_5'}
+  warnings.warn(
+/opt/homebrew/Cellar/python@3.13/3.13.2/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/resource_tracker.py:277: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/mp-_j9dljmw'}
+  warnings.warn(
+Démarrage de l'application TvBin sur le port 8070...
+Dash is running on http://127.0.0.1:8070/
+
+ * Serving Flask app 'web_ui.dashboard'
+ * Debug mode: on

@@ -3,6 +3,1392 @@
         "timeframe": "1d",
         "notifications_enabled": true,
         "last_signal": 1,
-        "last_signal_date": "2025-03-17 12:32:29"
+        "last_signal_date": "2025-05-16 00:02:35"
+    },
+    "ETH": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-26"
+    },
+    "SOL": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-16"
+    },
+    "ADA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "BNB": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "XRP": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "AVAX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "DOGE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "DOT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "SHIB": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "LTC": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-25"
+    },
+    "UNI": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "LINK": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "XLM": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "ATOM": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "BCH": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-13"
+    },
+    "ALGO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-20"
+    },
+    "NEAR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "FIL": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "VET": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-21"
+    },
+    "ICP": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-10"
+    },
+    "MANA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-15"
+    },
+    "SAND": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "AXS": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "HBAR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "XTZ": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "EOS": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "EGLD": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-25"
+    },
+    "THETA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "AAVE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "ETC": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "CAKE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "GRT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "FTM": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2024-12-21"
+    },
+    "FLOW": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "NEO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "KLAY": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2024-10-27"
+    },
+    "QNT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "MKR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-11"
+    },
+    "CHZ": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "ONE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-21"
+    },
+    "ENJ": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "GALA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "ZEC": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-29"
+    },
+    "DASH": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "KSM": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "BAT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "CELO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "AR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "ROSE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "COMP": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "HOT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "STX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-21"
+    },
+    "NEXO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "LRC": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "TFUEL": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-19"
+    },
+    "KAVA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "RVN": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "QTUM": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-19"
+    },
+    "ZIL": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-20"
+    },
+    "CRV": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-09"
+    },
+    "YFI": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "ANKR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "MINA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "IOTX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "ICX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-19"
+    },
+    "STORJ": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "SNX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "IOTA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "1INCH": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "GLM": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "SUSHI": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "AUDIO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "DYDX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "CELR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "ALPHA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-05-07"
+    },
+    "IOST": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "BTTC": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-25"
+    },
+    "HIVE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-18"
+    },
+    "REN": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2024-11-18"
+    },
+    "SKL": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "SXP": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "SC": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "ONT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "ZRX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-19"
+    },
+    "CTSI": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "FET": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-18"
+    },
+    "STMX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-01-18"
+    },
+    "COTI": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-21"
+    },
+    "BNT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "SYS": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "BAND": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "RAY": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-14"
+    },
+    "DENT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "PAXG": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-05-14"
+    },
+    "DGB": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-10"
+    },
+    "WAXP": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-19"
+    },
+    "ARDR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-12"
+    },
+    "PERP": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-25"
+    },
+    "POWR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "BAKE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "NKN": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "OGN": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "ALICE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "MBOX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "VTHO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "STEEM": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-14"
+    },
+    "WRX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2024-12-19"
+    },
+    "PROM": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-04-29"
+    },
+    "DUSK": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "TWT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "STRAX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-14"
+    },
+    "RUNE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-20"
+    },
+    "RSR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-03"
+    },
+    "MTL": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "BADGER": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-02-24"
+    },
+    "FORTH": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-26"
+    },
+    "LINA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2024-12-19"
+    },
+    "POND": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "SUPER": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-13"
+    },
+    "MASK": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-10"
+    },
+    "AGLD": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "HARD": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-04-03"
+    },
+    "DODO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "VOXEL": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-21"
+    },
+    "ALCX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "LOKA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-25"
+    },
+    "GHST": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "ALPACA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "FIDA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-11"
+    },
+    "FARM": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "QUICK": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-12"
+    },
+    "MOVR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "GLMR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "ASTR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "SCRT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-21"
+    },
+    "SPELL": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "PEOPLE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-25"
+    },
+    "BICO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "JASMY": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-12"
+    },
+    "API3": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "DEXE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-05-12"
+    },
+    "IDEX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "RARE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "IRIS": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2024-11-26"
+    },
+    "UNFI": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2024-10-25"
+    },
+    "AKRO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2024-12-16"
+    },
+    "DEGO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-05-15"
+    },
+    "AERGO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-01-04"
+    },
+    "VITE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2024-12-19"
+    },
+    "NULS": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2024-12-20"
+    },
+    "ARPA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "FIRO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-01-17"
+    },
+    "CTXC": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-03-28"
+    },
+    "PIVX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "STPT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "WING": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-04-02"
+    },
+    "BURGER": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-03-04"
+    },
+    "TROY": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-01-03"
+    },
+    "TLM": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "PUNDIX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-19"
+    },
+    "BAR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-05-13"
+    },
+    "ONDO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "USDC": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-05-14"
+    },
+    "TRX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-03-29"
+    },
+    "SUI": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "TON": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-10"
+    },
+    "PEPE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-18"
+    },
+    "TAO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-18"
+    },
+    "APT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "TRUMP": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "RENDER": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-12"
+    },
+    "POL": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "ENA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-10"
+    },
+    "ARB": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "TIA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-10"
+    },
+    "WLD": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "BONK": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-13"
+    },
+    "S": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "FDUSD": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-11"
+    },
+    "JUP": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "SEI": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "OP": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-10"
+    },
+    "INJ": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "IMX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "VIRTUAL": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-12"
+    },
+    "WIF": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "FORM": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "FLOKI": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "LDO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-26"
+    },
+    "PENGU": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "ENS": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "KAIA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "PENDLE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-03-24"
+    },
+    "JTO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "PYTH": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "STRK": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "MOVE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-03-30"
+    },
+    "TUSD": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-04-06"
+    },
+    "APE": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "CFX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "XEC": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-21"
+    },
+    "W": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "KAITO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-07"
+    },
+    "NXPC": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 0,
+        "last_signal_date": "2025-05-15"
+    },
+    "FTT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-01"
+    },
+    "ETHFI": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "EIGEN": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "BERA": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-12"
+    },
+    "AMP": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-22"
+    },
+    "OM": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-03-08"
+    },
+    "SUN": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-14"
+    },
+    "AXL": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-26"
+    },
+    "TURBO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-20"
+    },
+    "JST": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-21"
+    },
+    "GNO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "PNUT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-25"
+    },
+    "LUNC": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "SYRUP": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-07"
+    },
+    "ZRO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "CVX": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-16"
+    },
+    "NOT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-24"
+    },
+    "SFP": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-25"
+    },
+    "BLUR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "ZK": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-09"
+    },
+    "CKB": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
+    },
+    "DCR": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-07"
+    },
+    "ACH": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-15"
+    },
+    "LPT": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "NEIRO": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-04-23"
+    },
+    "LAYER": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": -1,
+        "last_signal_date": "2025-05-08"
+    },
+    "GAS": {
+        "timeframe": "1d",
+        "notifications_enabled": true,
+        "last_signal": 1,
+        "last_signal_date": "2025-05-08"
     }
 }

@@ -11,9 +11,10 @@ import json
 import sys
 import time
 import threading
+import requests
 
 import dash
-from dash import dcc, html, callback, Input, Output, State, ALL, MATCH
+from dash import dcc, html, callback, Input, Output, State, ALL, MATCH, Output
 from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
@@ -45,6 +46,18 @@ class Dashboard:
     Classe principale pour le tableau de bord de l'application TvBin.
     """
     
+    def keep_alive(self):
+        """
+        Ping l'URL publique de l'app toutes les 14 minutes pour éviter la mise en veille.
+        """
+        while True:
+            try:
+                # Remplace cette URL par l'URL publique de ton app sur Render/Railway
+                requests.get("https://ton-app.render.com/", timeout=10)
+            except Exception as e:
+                logger.warning(f"Keep-alive failed: {e}")
+            time.sleep(14 * 60)  # 14 minutes
+
     def __init__(self):
         """Initialise le tableau de bord avec les composants nécessaires."""
         # Initialiser les composants
@@ -72,8 +85,14 @@ class Dashboard:
             title=config.APP_CONFIG["title"]
         )
         
+        # Lancer le thread keep-alive pour éviter la mise en veille
+        threading.Thread(target=self.keep_alive, daemon=True).start()
+        
         # Précharger les données des cryptos principales
         self._preload_data()
+        
+        # Mise à jour automatique des tickers au démarrage
+        self.tickers_added, self.tickers_removed = self._update_cmc_tickers()
         
         # Ajouter du CSS personnalisé pour améliorer le contraste
         self.app.index_string = '''
@@ -222,13 +241,20 @@ class Dashboard:
         """Crée l'onglet du tableau de bord."""
         # Créer les options pour les cryptos
         crypto_options = []
-        
         # Ajouter un séparateur
         crypto_options.append({"label": "--- Top Cryptos ---", "value": "", "disabled": True})
-        
+        # Charger la liste dynamique
+        try:
+            with open(config.CRYPTO_TICKERS_PATH, "r") as f:
+                top_tickers = set(json.load(f))
+        except Exception:
+            top_tickers = set()
         # Ajouter les options pour les cryptos
         for symbol in config.CRYPTO_TICKERS:
-            crypto_options.append({"label": f"{symbol}", "value": symbol})
+            if symbol in top_tickers:
+                crypto_options.append({"label": f"{symbol}", "value": symbol})
+            else:
+                crypto_options.append({"label": f"⚠️ {symbol}", "value": symbol, "style": {"color": "orange"}})
         
         return dbc.Container([
             dbc.Row([
@@ -457,10 +483,18 @@ class Dashboard:
     
     def _create_settings_tab(self):
         """Crée l'onglet des paramètres."""
+        # Ajout du bouton d'arrêt
+        stop_button = dbc.Button(
+            "Arrêter le logiciel",
+            id="stop-app-button",
+            color="danger",
+            className="mb-2"
+        )
         return dbc.Container([
             html.H2("Paramètres", className="mb-4"),
             html.P("Configurez les paramètres de l'application."),
-            
+            # Affichage des ajouts/suppressions de tickers
+            html.Div(id="tickers-update-info"),
             dbc.Card([
                 dbc.CardHeader("Service de Surveillance"),
                 dbc.CardBody([
@@ -540,7 +574,24 @@ class Dashboard:
                         ])
                     ])
                 ])
-            ])
+            ]),
+            dbc.Card([
+                dbc.CardHeader("Mise à jour des tickers CoinMarketCap"),
+                dbc.CardBody([
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Button(
+                                "Mettre à jour les tickers CoinMarketCap",
+                                id="update-cmc-tickers-button",
+                                color="warning",
+                                className="mb-2"
+                            ),
+                            html.Div(id="update-cmc-tickers-result", className="mt-2")
+                        ])
+                    ])
+                ])
+            ], className="mb-4"),
+            stop_button,
         ], fluid=True)
     
     def _init_callbacks(self):
@@ -1325,6 +1376,9 @@ class Dashboard:
                 raise PreventUpdate
             
             ctx = dash.callback_context
+            if not ctx.triggered:
+                raise PreventUpdate
+                
             button_id = ctx.triggered[0]["prop_id"].split(".")[0]
             ticker = json.loads(button_id)["index"]
             
@@ -1337,18 +1391,40 @@ class Dashboard:
             # Créer les lignes du tableau
             rows = []
             
+            # Convertir le dictionnaire en liste pour le tri
+            watchlist_items = []
             for ticker, info in watchlist.items():
-                # Déterminer le type de signal
+                try:
+                    if info["last_signal_date"] and isinstance(info["last_signal_date"], str):
+                        signal_date = datetime.strptime(info["last_signal_date"], "%Y-%m-%d")
+                    elif info["last_signal_date"]:
+                        signal_date = info["last_signal_date"]
+                    else:
+                        signal_date = datetime.min
+                except Exception:
+                    signal_date = datetime.min
+                
+                watchlist_items.append((ticker, info, signal_date))
+            
+            # Trier par date de signal (du plus récent au plus ancien)
+            watchlist_items.sort(key=lambda x: x[2], reverse=True)
+            
+            # Créer les lignes du tableau avec les données triées
+            for ticker, info, _ in watchlist_items:
+                # Déterminer le type de signal et la tendance
                 signal = info["last_signal"]
                 if signal == 1:
                     signal_text = "HAUSSIER 📈"
                     signal_color = "success"
+                    trend_text = "Tendance haussière"
                 elif signal == -1:
                     signal_text = "BAISSIER 📉"
                     signal_color = "danger"
+                    trend_text = "Tendance baissière"
                 else:
                     signal_text = "AUCUN"
                     signal_color = "secondary"
+                    trend_text = "Pas de tendance"
                 
                 # Déterminer le timeframe
                 timeframe_text = "Journalier" if info["timeframe"] == "1d" else "Hebdomadaire"
@@ -1358,15 +1434,28 @@ class Dashboard:
                 notifications_text = "Activées" if notifications_enabled else "Désactivées"
                 notifications_color = "success" if notifications_enabled else "danger"
                 
-                # Créer la ligne du tableau
+                # Formater la date du signal
+                signal_date = info["last_signal_date"] if info["last_signal_date"] else "N/A"
+                
+                # Créer la ligne du tableau avec la tendance
                 row = html.Tr([
                     html.Td(ticker),
                     html.Td(timeframe_text),
-                    html.Td(dbc.Badge(signal_text, color=signal_color, className="p-2")),
-                    html.Td(info["last_signal_date"] or "N/A"),
+                    html.Td([
+                        dbc.Badge(signal_text, color=signal_color, className="p-2"),
+                        html.Div(trend_text, className="small text-muted mt-1")
+                    ]),
+                    html.Td(signal_date),
                     html.Td(dbc.Badge(notifications_text, color=notifications_color, className="p-2")),
                     html.Td([
                         dbc.ButtonGroup([
+                            dbc.Button(
+                                "Voir Graphique",
+                                id={"type": "view-chart-button", "index": f"{ticker}_{info['timeframe']}"},
+                                color="info",
+                                size="sm",
+                                className="me-1"
+                            ),
                             dbc.Button(
                                 "Notifications",
                                 id={"type": "toggle-notifications-button", "index": ticker},
@@ -1389,9 +1478,11 @@ class Dashboard:
             return rows
         
         @self.app.callback(
-            [Output("watchlist-table-body", "children", allow_duplicate=True),
-             Output("watchlist-table", "className", allow_duplicate=True),
-             Output("empty-watchlist-message", "className", allow_duplicate=True)],
+            [
+                Output("watchlist-table-body", "children", allow_duplicate=True),
+                Output("watchlist-table", "className", allow_duplicate=True),
+                Output("empty-watchlist-message", "className", allow_duplicate=True)
+            ],
             Input({"type": "remove-from-watchlist-button", "index": ALL}, "n_clicks"),
             prevent_initial_call=True
         )
@@ -1519,10 +1610,12 @@ class Dashboard:
             return [option["value"] for option in available_options]
 
         @self.app.callback(
-            [Output("tabs", "active_tab"),
-             Output("symbol-dropdown", "value"),
-             Output("timeframe-dropdown", "value"),
-             Output("apply-button", "n_clicks", allow_duplicate=True)],
+            [
+                Output("tabs", "active_tab"),
+                Output("symbol-dropdown", "value"),
+                Output("timeframe-dropdown", "value"),
+                Output("apply-button", "n_clicks", allow_duplicate=True)
+            ],
             [Input("tab-navigation-store", "data")],
             prevent_initial_call=True
         )
@@ -1534,8 +1627,10 @@ class Dashboard:
             return "tab-dashboard", data["ticker"], data["timeframe"], 1
 
         @self.app.callback(
-            [Output("tab-navigation-store", "data"),
-             Output("apply-button", "n_clicks")],
+            [
+                Output("tab-navigation-store", "data"),
+                Output("apply-button", "n_clicks")
+            ],
             [Input({"type": "view-chart-button", "index": ALL}, "n_clicks")],
             prevent_initial_call=True
         )
@@ -1550,3 +1645,77 @@ class Dashboard:
             
             # Retourner les données pour la navigation et simuler un clic sur le bouton Appliquer
             return {"ticker": ticker, "timeframe": timeframe}, 1
+
+        # Callback pour afficher les ajouts/suppressions de tickers
+        @self.app.callback(
+            Output("tickers-update-info", "children"),
+            Input("tabs", "active_tab")
+        )
+        def show_tickers_update_info(tab):
+            if tab != "tab-settings":
+                raise PreventUpdate
+            added = getattr(self, "tickers_added", [])
+            removed = getattr(self, "tickers_removed", [])
+            content = []
+            if added:
+                content.append(dbc.Alert(f"Tickers ajoutés: {', '.join(added)}", color="success"))
+            if removed:
+                content.append(dbc.Alert(f"Tickers supprimés: {', '.join(removed)}", color="warning"))
+            if not content:
+                content.append(html.P("Aucun changement de tickers au démarrage."))
+            return content
+
+        # Callback pour forcer la mise à jour manuelle
+        @self.app.callback(
+            Output("update-cmc-tickers-result", "children"),
+            Input("update-cmc-tickers-button", "n_clicks")
+        )
+        def force_update_cmc_tickers(n_clicks):
+            if not n_clicks:
+                raise PreventUpdate
+            added, removed = self._update_cmc_tickers()
+            msg = []
+            if added:
+                msg.append(dbc.Alert(f"Tickers ajoutés: {', '.join(added)}", color="success"))
+            if removed:
+                msg.append(dbc.Alert(f"Tickers supprimés: {', '.join(removed)}", color="warning"))
+            msg.append(dbc.Alert("Redémarrez le logiciel pour prendre en compte la nouvelle liste de tickers.", color="info"))
+            return msg
+
+        # Callback pour arrêter le logiciel
+        @self.app.callback(
+            Output("stop-app-button", "n_clicks"),
+            Input("stop-app-button", "n_clicks")
+        )
+        def stop_app(n_clicks):
+            if n_clicks:
+                import os
+                os._exit(0)
+            raise PreventUpdate
+
+    def _update_cmc_tickers(self):
+        """Met à jour la liste des tickers CoinMarketCap et retourne les ajouts/suppressions."""
+        import requests
+        api_key = config.COINMARKETCAP_API_KEY
+        url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+        headers = {"X-CMC_PRO_API_KEY": api_key, "Accept": "application/json"}
+        params = {"limit": 200, "convert": "USD"}
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code == 200:
+            data = response.json()
+            new_tickers = [coin["symbol"] for coin in data["data"]]
+            # Charger l'ancienne liste
+            try:
+                with open(config.CRYPTO_TICKERS_PATH, "r") as f:
+                    old_tickers = json.load(f)
+            except Exception:
+                old_tickers = []
+            # Sauvegarder la nouvelle liste
+            with open(config.CRYPTO_TICKERS_PATH, "w") as f:
+                json.dump(new_tickers, f, indent=2)
+            # Calculer ajouts/suppressions
+            added = [t for t in new_tickers if t not in old_tickers]
+            removed = [t for t in old_tickers if t not in new_tickers]
+            return added, removed
+        else:
+            return None, None
