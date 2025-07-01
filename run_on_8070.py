@@ -24,8 +24,9 @@ def main():
     # Créer une instance du dashboard
     dashboard = Dashboard()
     
-    # Lancer l'application sur le port 8070
-    dashboard.app.run(debug=True, host='127.0.0.1', port=8070)
+    # Lancer l'application sur le port fourni par Railway/app
+    port = int(os.environ.get("PORT", 8070))
+    dashboard.app.run(debug=True, host='0.0.0.0', port=port)
 
 if __name__ == "__main__":
     main()
